@@ -68,6 +68,24 @@ func (s *Server) ConnectionHandler(conn net.Conn) {
 
 	s.Broadcast(user, "online")
 
+	go func() {
+		buffer := make([]byte, 4096)
+		for {
+			n, err := conn.Read(buffer)
+			if n == 0 {
+				s.Broadcast(user, "offline")
+				return
+			}
+
+			if err != nil {
+				fmt.Println("conn.Read error:", err)
+				return
+			}
+
+			s.Broadcast(user, string(buffer[:n-1]))
+		}
+	}()
+
 	select {}
 }
 
