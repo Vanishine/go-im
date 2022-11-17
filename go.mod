@@ -1,3 +1,3 @@
-module github.com/Vanishing/go-im
+module github.com/Vanishine/go-im
 
 go 1.19
